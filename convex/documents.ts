@@ -17,6 +17,7 @@ export const getDocument = query({
 export const createDocument = mutation({
   args: {
     title: v.string(),
+    fileID : v.string(),
   },
   handler: async (ctx, args) => {
     const userID = (await ctx.auth.getUserIdentity())?.tokenIdentifier;
@@ -26,6 +27,11 @@ export const createDocument = mutation({
     await ctx.db.insert("documents", {
       title: args.title,
       tokenIdentifier: userID,
+      fileID: args.fileID
     });
   },
+});
+
+export const generateUploadUrl = mutation(async (ctx) => {
+  return await ctx.storage.generateUploadUrl();
 });
