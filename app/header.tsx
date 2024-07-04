@@ -12,7 +12,7 @@ export function Header() {
             className=" text-2xl font-semibold"
             style={{ color: "#f27d09" }}
           >
-            TopicTrack
+            BookBeacon
           </span>
         </div>
         <div className=" flex justify-between items-center gap-6">
