@@ -16,15 +16,18 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { LoadingButton } from "@/components/ui/loading-button";
+import { Id } from "@/convex/_generated/dataModel";
+import { useOrganization } from "@clerk/nextjs";
 
 const formSchema = z.object({
   title: z.string().min(2).max(80),
-  file: z.instanceof(File)
+  file: z.instanceof(File),
 });
 
 export function UplaodDocumentForm({ onUpload }: { onUpload: () => void }) {
   const createDocument = useMutation(api.documents.createDocument);
   const generateUploadUrl = useMutation(api.documents.generateUploadUrl);
+  const organization = useOrganization();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -34,21 +37,20 @@ export function UplaodDocumentForm({ onUpload }: { onUpload: () => void }) {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-
     const url = await generateUploadUrl();
 
     const result = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": values.file.type },
-        body: values.file,
-      });
-      const { storageId } = await result.json();
-      console.log(storageId);
+      method: "POST",
+      headers: { "Content-Type": values.file.type },
+      body: values.file,
+    });
+    const { storageId } = await result.json();
+    console.log(storageId);
 
     await createDocument({
-        title: values.title,
-        fileID: storageId as string,
-  
+      title: values.title,
+      fileID: storageId as Id<"_storage">,
+      orgId: organization.organization?.id,
     });
     // // sleep 2 seconds
     // // await new Promise((resolve) => setTimeout(resolve, 2000));
@@ -72,25 +74,33 @@ export function UplaodDocumentForm({ onUpload }: { onUpload: () => void }) {
             </FormItem>
           )}
         />
-         <FormField
+        <FormField
           control={form.control}
           name="file"
-          render={({ field: {value, onChange, ...fieldProps} }) => (
+          render={({ field: { value, onChange, ...fieldProps } }) => (
             <FormItem>
               <FormLabel>File</FormLabel>
               <FormControl>
-                <Input type="file" accept=".txt, .xml, .doc, .docx, .md, " {...fieldProps} onChange={(event)=>{
+                <Input
+                  type="file"
+                  accept=".txt, .xml, .doc, .docx, .md "
+                  {...fieldProps}
+                  onChange={(event) => {
                     const file = event.target.files?.[0];
                     onChange(file);
-                }} />
+                  }}
+                />
               </FormControl>
 
               <FormMessage />
             </FormItem>
           )}
         />
-        <LoadingButton loadingText="Uploading..." isLoading={form.formState.isSubmitting}>
-            Upload
+        <LoadingButton
+          loadingText="Uploading..."
+          isLoading={form.formState.isSubmitting}
+        >
+          Upload
         </LoadingButton>
       </form>
     </Form>
