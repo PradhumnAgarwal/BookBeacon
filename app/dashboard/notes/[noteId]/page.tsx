@@ -11,7 +11,7 @@ export default function NotePage() {
   const note = useQuery(api.notes.getNote, {
     noteId: noteId,
   });
-  return <div className="relative pr-14 whitespace-pre-line h-[550px] overflow-y-scroll flex-1 bg-slate-800 p-4 rounded-xl">
+  return <div className="relative pr-14 bg-slate-200 whitespace-pre-line h-[550px] overflow-y-scroll flex-1 dark:bg-slate-800 p-4 rounded-xl">
     <DeleteNoteButton noteId={noteId} />
     {note?.text}
     </div>;

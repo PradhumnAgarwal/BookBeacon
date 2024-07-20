@@ -19,7 +19,7 @@ function SearchResult({
 }) {
   return (
     <Link href={url}>
-      <li className="hover:bg-slate-800 bg-slate-900 p-4 rounded-md whitespace-pre-line">
+      <li className="dark:hover:bg-slate-800 dark:bg-slate-900 bg-slate-200 hover:bg-slate-300 p-4 rounded-md whitespace-pre-line">
         <div className="w-full flex justify-between pb-4 pr-6">
           {type === "note" ? (
             <span className=" flex gap-2 items-center">

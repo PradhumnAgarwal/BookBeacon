@@ -16,13 +16,13 @@ export default function ChatPanel({
   // const askQuestion = useAction(api.documents.askQuestion);
   const chats = useQuery(api.chats.getChatsForDocument, {documentId})
   return (
-    <div className="w-full bg-gray-900 flex flex-col justify-between p-2 rounded-xl">
+    <div className="w-full dark:bg-gray-900 bg-slate-100 flex flex-col justify-between p-2 rounded-xl">
       <div className=" overflow-y-auto h-[430px] gap-2 space-y-2">
 
         {chats?.map(chat =>(
           <div key={chat._id} className={cn({
-            "bg-gray-950" : chat.isHuman === false,
-            "bg-slate-800" : chat.isHuman === true,
+            "dark:bg-gray-950 bg-slate-300" : chat.isHuman === false,
+            "dark:bg-slate-800 bg-slate-200" : chat.isHuman === true,
             "text-right": chat.isHuman,
             
           },"px-3 py-1 rounded-md whitespace-pre-line")}>{chat.isHuman ? "You: " : "AI: "}{chat.text}</div>
