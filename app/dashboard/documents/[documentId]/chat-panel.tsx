@@ -20,7 +20,7 @@ export default function ChatPanel({
       <div className=" overflow-y-auto h-[430px] gap-2 space-y-2">
 
         {chats?.map(chat =>(
-          <div className={cn({
+          <div key={chat._id} className={cn({
             "bg-gray-950" : chat.isHuman === false,
             "bg-slate-800" : chat.isHuman === true,
             "text-right": chat.isHuman,

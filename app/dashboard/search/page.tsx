@@ -64,6 +64,7 @@ export default function Search() {
           if (record.type === "notes") {
             return (
               <SearchResult
+              key={record.score}
                 type="note"
                 url={`/dashboard/notes/${record.record._id}`}
                 score={record.score}
