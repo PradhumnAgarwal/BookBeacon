@@ -74,6 +74,7 @@ export default function Search() {
           } else {
             return (
               <SearchResult
+              key={record.score}
                 type="document"
                 url={`/dashboard/documents/${record.record._id}`}
                 score={record.score}
